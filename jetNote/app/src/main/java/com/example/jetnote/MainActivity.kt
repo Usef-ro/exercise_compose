@@ -2,6 +2,7 @@ package com.example.jetnote
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -10,7 +11,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetnote.ui.theme.JetNoteTheme
 import androidx.compose.runtime.getValue
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+
+@AndroidEntryPoint
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -19,10 +24,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetNoteTheme {
 
-                val viewmodel: noteViewModel by viewModel()
+                val viewmodel: noteViewModel = viewModel()
 
                 val noteList = viewmodel.getAllNotes()
-
+                Log.e("notrlist", "onCreate: "+noteList )
                 noteScreen(
                     notes = noteList,
                     onAddNote = {

@@ -15,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.jetnote.components.noteButton
 import com.example.jetnote.components.noteInput
 import com.example.jetnote.components.noteRow
+import com.example.jetnote.domain.Note
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -89,7 +89,11 @@ fun noteScreen(
             noteButton(
                 text = "Save",
                 onClick = {
-
+                    if (title.isNotEmpty() && description.isNotEmpty()) {
+                        onAddNote(Note(title = title, description = description))
+                        title=""
+                        description=""
+                    }
                 }
             )
 
@@ -103,7 +107,7 @@ fun noteScreen(
                 items(notes) { notee ->
 
                     noteRow(note = notee, onClick = {
-                        Log.e("click item Note : ", "noteScreen: "+it )
+                        Log.e("click item Note : ", "noteScreen: " + it)
                     })
                 }
             }
