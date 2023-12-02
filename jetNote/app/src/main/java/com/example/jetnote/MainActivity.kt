@@ -24,10 +24,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetNoteTheme {
 
+                /*
+                ViewModel
+                 */
                 val viewmodel: noteViewModel = viewModel()
 
                 val noteList = viewmodel.getAllNotes()
-                Log.e("notrlist", "onCreate: "+noteList )
+
+                /*
+                Main Screen
+                 */
+
+
                 noteScreen(
                     notes = noteList,
                     onAddNote = {

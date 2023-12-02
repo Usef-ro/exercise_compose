@@ -64,7 +64,9 @@ fun noteScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-
+/*
+Input Title
+ */
             noteInput(
                 text = title,
                 label = "Title", onValueChanged = {
@@ -74,7 +76,9 @@ fun noteScreen(
                 }
             )
 
-
+            /*
+            Input Description
+             */
             noteInput(
                 text = description,
                 label = "Des",
@@ -85,14 +89,16 @@ fun noteScreen(
                 }
 
             )
-
+            /*
+            Button Save
+             */
             noteButton(
                 text = "Save",
                 onClick = {
                     if (title.isNotEmpty() && description.isNotEmpty()) {
                         onAddNote(Note(title = title, description = description))
-                        title=""
-                        description=""
+                        title = ""
+                        description = ""
                     }
                 }
             )
@@ -103,6 +109,10 @@ fun noteScreen(
                 ),
             )
 
+
+            /*
+            List Of Item
+             */
             LazyColumn {
                 items(notes) { notee ->
 
