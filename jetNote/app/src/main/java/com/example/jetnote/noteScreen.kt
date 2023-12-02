@@ -18,24 +18,27 @@ import com.example.jetnote.components.noteInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
-fun noteScreen(){
+@Preview(showBackground = true)
+
+fun noteScreen() {
 
     Column(
         Modifier.padding(12.dp)
     ) {
         TopAppBar(title = {
             Text(text = "Note")
-        }
-       ,
-        actions = {
-            Icon(imageVector = Icons.Default.Notifications,contentDescription = null)
-        }
+        },
+            actions = {
+                Icon(imageVector = Icons.Default.Notifications, contentDescription = null)
+            }
         )
+        /*
+        Content
+         */
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            noteInput(text = "Hi", label ="Enter" )
+            noteInput(text = "Hi", label = "Enter")
         }
     }
 

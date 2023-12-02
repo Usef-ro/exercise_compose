@@ -55,19 +55,3 @@ fun noteInput(
 }
 
 
-//,colors=TextFieldDefaults.textFieldColors(
-//errorLabelColor = Color.Red,
-//
-//),
-//maxLine=maxLine,
-//label=label
-//,KeyboardOptions.Default.copy(
-//imeAction = ImeAction.Done
-//),
-//KeyboardActions(
-//onDone = {
-
-//
-//}
-
-
