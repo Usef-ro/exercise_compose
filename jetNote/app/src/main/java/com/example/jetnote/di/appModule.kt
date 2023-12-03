@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.jetnote.domain.NoteDatabase
 import com.example.jetnote.domain.NoteDatabaseDao
+import com.example.jetnote.util.dataConvert
+import com.example.jetnote.util.uuidConverter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,5 +36,6 @@ object appModule {
         "note_db"
 
     ).fallbackToDestructiveMigration()
+//        .addTypeConverter(uuidConverter::class)
         .build()
 }

@@ -6,12 +6,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
+
 
 @Dao
 interface NoteDatabaseDao {
 
     @Query("SELECT * FROM note_tb")
-    fun getNotes():List<Note>
+    fun getNotes():
+            Flow<List<Note>>
 
     @Query("SELECT * FROM note_tb where id=:id")
     suspend fun getNotesById(id:String):List<Note>

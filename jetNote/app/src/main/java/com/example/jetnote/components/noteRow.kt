@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.jetnote.domain.Note
+import com.example.jetnote.util.formatDate
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
@@ -56,8 +57,9 @@ fun noteRow(
 
             Text(text = note.description,style=MaterialTheme.typography.labelSmall  )
 
+
             Text(
-                text = note.entry.toString(),
+                text = formatDate(note.entry.time),
                 // Jul 18 ,Wed, Jul 18 1999
 
                 style=MaterialTheme.typography.labelSmall

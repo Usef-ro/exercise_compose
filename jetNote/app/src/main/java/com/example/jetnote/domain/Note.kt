@@ -1,6 +1,7 @@
 package com.example.jetnote.domain
 
 import android.os.Build
+import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -13,8 +14,9 @@ import java.util.UUID
 @Entity(tableName = "note_tb")
 data class Note @RequiresApi(Build.VERSION_CODES.O) constructor(
 
-    @PrimaryKey
-    val id: UUID = UUID.randomUUID(),
+    @PrimaryKey(true)
+    @NonNull
+    val id:Int=0,
 
     @ColumnInfo(
         name = "note_title"
