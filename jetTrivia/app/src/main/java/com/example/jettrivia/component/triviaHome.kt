@@ -17,6 +17,12 @@ fun triviaHome( viewModel:viewModelQuestion){
         Log.e(TAG, "triviaHome: loading" )
         CircularProgressIndicator()
     }else{
+        if(question !=null){
+questionScreen(questionItem = question.first(),
+    viewModel =viewModel
+    , onNextClicked = {})
+
+        }
         Log.e(TAG, "triviaHome: "+viewModel.data.value.data, )
     }
 

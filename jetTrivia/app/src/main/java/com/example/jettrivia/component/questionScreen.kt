@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,17 +41,31 @@ import com.example.jettrivia.viewModel.viewModelQuestion
 @Composable
 fun questionScreen(
     questionItem: modelQuestionItem,
-    questionIndex: MutableState<Int>,
+//    questionIndex: MutableState<Int>,
     viewModel: viewModelQuestion,
-    onNextClicked: (Int) -> Unit
+    onNextClicked: (Int) -> Unit={},
 ) {
 
     val choicesState = remember(questionItem) {
         questionItem.choices.toMutableList()
     }
 
+    val answerState = remember(questionItem) {
+        mutableStateOf<Int?>(null)
+    }
+
     val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
 
+    val correctAnswerState = remember(questionItem) {
+        mutableStateOf<Boolean?>(null)
+    }
+
+    val updateAnswer: (Int) -> Unit = remember(questionItem) {
+        {
+            answerState.value = it
+            correctAnswerState.value = choicesState[it] == questionItem.answer
+        }
+    }
 
     Surface(
         modifier = Modifier
@@ -78,9 +95,9 @@ fun questionScreen(
             /*
            Main Question
              */
-            Column {
+            Column() {
                 Text(
-                    text = "",
+                    text = questionItem.question,
                     modifier = Modifier
                         .padding(6.dp)
                         .align(alignment = Alignment.Start)
@@ -111,10 +128,32 @@ fun questionScreen(
                                     50, 50, 50, 50
                                 )
                             )
-                            .background(Color.Transparent)
+                            .background(Color.Transparent),
+                        verticalAlignment = Alignment.CenterVertically
 
                     ) {
 
+                        /*
+                        Radio Button
+                         */
+                        RadioButton(
+                            selected = (answerState.value == index), onClick = {
+                                updateAnswer(index)
+                            }, modifier = Modifier.padding(start = 16.dp),
+                            colors = RadioButtonDefaults
+                                .colors(
+                                    selectedColor =
+                                    if (correctAnswerState.value == true
+                                        && index == answerState.value
+                                    ) {
+                                        Color.Green.copy(alpha = 0.2f)
+                                    } else {
+                                        Color.Red.copy(alpha = 0.2f)
+
+                                    }
+                                )
+                        )
+                        Text(text =choicesState[index] )
                     }
                 }
             }
