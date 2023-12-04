@@ -19,11 +19,17 @@ class questionRepository @Inject constructor(
             dataOrException<ArrayList<modelQuestionItem>,Boolean,Exception>{
         try{
             listOfQuestion.loading=true
+
             listOfQuestion.data=api.getAllQuestion()
+
             if(listOfQuestion.data.toString().isNotEmpty())
+
                 listOfQuestion.loading=false
+
         }catch (exception:Exception){
+
             listOfQuestion.e=exception
+
             Log.e(TAG, "getAllQuestion: ${listOfQuestion.e!!.localizedMessage}" )
         }
         return listOfQuestion
