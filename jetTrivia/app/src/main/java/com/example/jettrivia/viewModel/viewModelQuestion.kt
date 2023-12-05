@@ -36,5 +36,7 @@ class viewModelQuestion @Inject constructor(
         }
         }
     }
-
+    fun getTotalCount():Int{
+        return data.value.data?.toMutableList()?.size!!
+    }
 }
