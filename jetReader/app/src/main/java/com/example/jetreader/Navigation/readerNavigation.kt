@@ -32,7 +32,7 @@ fun readerNavigation() {
         }
 
         composable(readerScreens.loginScreen.name) {
-            readerBookLogin()
+            readerBookLogin(navConroller)
         }
 
         composable(
@@ -42,6 +42,7 @@ fun readerNavigation() {
         }
 
         composable(readerScreens.createAccountScreen.name){
+
 
         }
     }
