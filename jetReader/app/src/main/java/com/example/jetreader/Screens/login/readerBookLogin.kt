@@ -13,13 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,22 +35,33 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jetreader.Components.InputField
 import com.example.jetreader.Components.passwordInput
 import com.example.jetreader.Components.readerLogo
+import com.example.jetreader.Navigation.readerScreens
+import com.example.jetreader.R
+import com.example.jetreader.Screens.login.viewModel.viewModelLogin
 
 
 /*
 Reader Login
  */
 @Composable
-fun readerBookLogin(navController: NavController) {
+fun readerBookLogin(
+    navController: NavController,
+    viewModel: viewModelLogin = androidx.lifecycle.viewmodel.compose.viewModel()
+
+) {
 
     val showLogin = rememberSaveable {
         mutableStateOf(true)
@@ -73,11 +87,16 @@ fun readerBookLogin(navController: NavController) {
              */
             if (showLogin.value)
                 userForm(loading = false, isCreateAccount = showLogin.value) { email, pwd ->
+                    viewModel.signInWithEmailAndPassword(email, pwd) {
+                        navController.navigate(readerScreens.homeScreen.name)
+                    }
                     Log.e("Inputss", "readerBookLogin: $email ,, $pwd")
                 }
             else {
                 userForm(loading = false, isCreateAccount = showLogin.value) { email, pwd ->
-
+                    viewModel.createUserWithEmailAndPassword(email, pwd) {
+                        navController.navigate(readerScreens.homeScreen.name)
+                    }
                 }
 
             }
@@ -157,6 +176,8 @@ fun userForm(
                 text = "Please enter a valid email and password",
                 modifier = Modifier.padding(4.dp)
             )
+
+
         } else {
             Text(text = "")
         }
@@ -203,7 +224,38 @@ fun userForm(
             keyboardController?.hide()
 
         }
+
+        if(isCreateAccount){
+
+            ButtonGoogle()
+
+        }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview(showBackground = true)
+fun ButtonGoogle() {
+
+    Surface(
+
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+        , shadowElevation = 10.dp
+        , shape = RoundedCornerShape(10.dp,10.dp,10.dp,10.dp)
+    ) {
+Row(modifier = Modifier.fillMaxWidth()
+    .background(MaterialTheme.colorScheme.primary)
+    .padding(top=10.dp, bottom = 10.dp)
+    ,
+    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center){
+    Icon(painter = painterResource(id = R.drawable.google_icon), contentDescription ="google" )
+    Text(text = "Sign In With Google",style= TextStyle(color= Color.Gray,fontWeight= FontWeight.Bold))
+}
+    }
+
 }
 
 
@@ -217,9 +269,9 @@ fun submitButton(textId: String, loading: Boolean, validInput: Boolean, onClick:
 
             .fillMaxWidth(),
         enabled = !loading && validInput,
-        shape = RoundedCornerShape(10.dp,10.dp,10.dp,10.dp),
+        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
 
-    ) {
+        ) {
         if (loading) CircularProgressIndicator(
             modifier = Modifier
                 .padding(10.dp)

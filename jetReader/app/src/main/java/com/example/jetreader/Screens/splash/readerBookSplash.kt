@@ -21,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.jetreader.Components.readerLogo
 import com.example.jetreader.Navigation.readerScreens
+import com.example.jetreader.Screens.login.viewModel.viewModelLogin
 import kotlinx.coroutines.delay
 
 
@@ -31,7 +33,8 @@ import kotlinx.coroutines.delay
 Splash screen
  */
 @Composable
-fun readerBookSplash(navController: NavController) {
+fun readerBookSplash(navController: NavController,
+) {
 
 
     val scale = remember {
