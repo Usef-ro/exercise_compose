@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.jetreader.Navigation.readerNavigation
 import com.example.jetreader.ui.theme.JetReaderTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +37,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp() {
 
+    val navController= rememberNavController()
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -44,7 +47,7 @@ fun MainApp() {
             modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            readerNavigation()
+            readerNavigation(navController)
         }
 
     }

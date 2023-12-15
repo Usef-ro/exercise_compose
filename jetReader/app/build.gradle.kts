@@ -135,4 +135,6 @@ dependencies {
      */
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
 
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
 }

@@ -1,6 +1,10 @@
 package com.example.jetreader.Screens.login
 
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
@@ -20,9 +25,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,9 +36,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -44,13 +50,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.jetreader.Components.InputField
 import com.example.jetreader.Components.passwordInput
 import com.example.jetreader.Components.readerLogo
 import com.example.jetreader.Navigation.readerScreens
 import com.example.jetreader.R
 import com.example.jetreader.Screens.login.viewModel.viewModelLogin
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 /*
@@ -59,8 +69,7 @@ Reader Login
 @Composable
 fun readerBookLogin(
     navController: NavController,
-    viewModel: viewModelLogin = androidx.lifecycle.viewmodel.compose.viewModel()
-
+    viewModel: viewModelLogin= hiltViewModel()
 ) {
 
     val showLogin = rememberSaveable {
@@ -161,6 +170,21 @@ fun userForm(
         email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty()
     }
 
+//    var imageUrl = remember {
+//        mutableStateOf<Uri?>(null)
+//    }
+
+
+//    val galleyLauncher =
+//        rememberLauncherForActivityResult(contract =
+//        ActivityResultContracts.GetContent(), onResult = { uri ->
+//            uri?.let { it ->
+//                imageUrl.value = it
+//            }
+//        }
+//
+//        )
+
     Column(
         modifier =
         Modifier
@@ -170,6 +194,39 @@ fun userForm(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
+//        Surface(
+//            shape = CircleShape,
+//            shadowElevation = 10.dp,
+//            modifier = Modifier
+//                .padding(10.dp)
+//                .size(65.dp)
+//                .clickable {
+//                    galleyLauncher.launch("image/*")
+//                },
+//        ) {
+//            if(imageUrl.value?.isAbsolute == true ){
+//                AsyncImage(
+//                    model = ImageRequest.Builder(LocalContext.current)
+//                        .data(imageUrl.value)
+//                        .crossfade(true)
+//                        .build(),
+//                    placeholder = painterResource(R.drawable.person),
+//                    contentDescription = "",
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier.clip(CircleShape)
+//                )
+//            }else{
+//                Image(
+//                    painter =
+//                    painterResource(id = R.drawable.person) ,
+//                    contentDescription = "chooseImage"
+//                )
+//            }
+//
+//        }
+
 
         if (isCreateAccount) {
             Text(
@@ -225,7 +282,7 @@ fun userForm(
 
         }
 
-        if(isCreateAccount){
+        if (isCreateAccount) {
 
             ButtonGoogle()
 
@@ -242,18 +299,27 @@ fun ButtonGoogle() {
 
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
-        , shadowElevation = 10.dp
-        , shape = RoundedCornerShape(10.dp,10.dp,10.dp,10.dp)
+            .padding(5.dp),
+        shadowElevation = 10.dp,
+        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
     ) {
-Row(modifier = Modifier.fillMaxWidth()
-    .background(MaterialTheme.colorScheme.primary)
-    .padding(top=10.dp, bottom = 10.dp)
-    ,
-    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center){
-    Icon(painter = painterResource(id = R.drawable.google_icon), contentDescription ="google" )
-    Text(text = "Sign In With Google",style= TextStyle(color= Color.Gray,fontWeight= FontWeight.Bold))
-}
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(top = 10.dp, bottom = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.google_icon),
+                contentDescription = "google"
+            )
+            Text(
+                text = "Sign In With Google",
+                style = TextStyle(color = Color.Gray, fontWeight = FontWeight.Bold)
+            )
+        }
     }
 
 }

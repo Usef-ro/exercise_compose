@@ -26,12 +26,14 @@ import androidx.navigation.NavController
 import com.example.jetreader.Components.readerLogo
 import com.example.jetreader.Navigation.readerScreens
 import com.example.jetreader.Screens.login.viewModel.viewModelLogin
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 
 /*
 Splash screen
  */
+
 @Composable
 fun readerBookSplash(navController: NavController,
 ) {
@@ -54,7 +56,16 @@ fun readerBookSplash(navController: NavController,
         )
         delay(2000L)
 
-        navController.navigate(readerScreens.loginScreen.name)
+        // check emial is exsit or not
+        if(FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()){
+
+            navController.navigate(readerScreens.loginScreen.name)
+
+        }else{
+
+            navController.navigate(readerScreens.homeScreen.name)
+
+        }
     }
 
     Surface(

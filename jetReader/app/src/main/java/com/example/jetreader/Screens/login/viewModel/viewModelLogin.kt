@@ -1,21 +1,17 @@
 package com.example.jetreader.Screens.login.viewModel
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.example.jetreader.Model.modelUser
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -25,8 +21,8 @@ import javax.inject.Inject
 @ViewModelScoped
 class viewModelLogin
 @Inject constructor(
-    val context: Context,
-): ViewModel() {
+
+) : ViewModel() {
 
     val loadingState = MutableStateFlow(LoadingState.Idle)
 
@@ -43,19 +39,57 @@ class viewModelLogin
 
         if (_loading.value == false) {
             _loading.value = true
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    home()
-                    _loading.value=false
-                }
-                .addOnFailureListener {
-                    Log.e("createUserWithEmailAndPassword",
-                        "addOnFailureListener: ${it.localizedMessage}", )
-                    _loading.value=false
 
-                }
+            try {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnSuccessListener {
+
+                        // me  @gmail.com
+                        val displayName = it.user?.email?.split("@")?.get(0)
+                        createUser(displayName)
+                        home()
+                        _loading.value = false
+                    }
+                    .addOnFailureListener {
+                        Log.e(
+                            "createUserWithEmailAndPassword",
+                            "addOnFailureListener: ${it.localizedMessage}",
+                        )
+                        _loading.value = false
+
+                    }
+            } catch (e: Exception) {
+                Log.e(
+                    "createUserWithEmailAndPassword",
+                    "Error ${e.localizedMessage}",
+                )
+            }
+
 
         }
+    }
+
+    private fun createUser(displayName: String?) {
+
+        // create data in fireStore Database
+
+        val userId = auth.currentUser?.uid
+        val user = modelUser(
+            userId = userId.toString(),
+            displayName = displayName.toString(),
+            avatarUrl = "", quote = "", profession = "", id = ""
+        ).toMap()
+
+//        user["user_id"] = userId.toString()
+//        user["display_name"]=displayName.toString()
+        try {
+            FirebaseFirestore.getInstance().collection("users")
+                .add(user)
+        } catch (e: Exception) {
+            Log.e("createUser", "error ${e.localizedMessage}")
+        }
+
+
     }
 
     fun signInWithEmailAndPassword(email: String, password: String, home: () -> Unit) =
@@ -96,16 +130,16 @@ class viewModelLogin
             }
         }
 
-    fun signInWithGoogle(home: () -> Unit){
+    fun signInWithGoogle(home: () -> Unit) {
 
-        val gso=GoogleSignInOptions.Builder(
+        val gso = GoogleSignInOptions.Builder(
             GoogleSignInOptions.DEFAULT_SIGN_IN
         )
 //            .requestIdToken()
             .requestEmail()
             .build()
 
-        mGoogleSignInClient=GoogleSignIn.getClient(context,gso)
+//        mGoogleSignInClient=GoogleSignIn.getClient(context,gso)
 
 //        mGoogleSignInClient.apiOptions
     }
