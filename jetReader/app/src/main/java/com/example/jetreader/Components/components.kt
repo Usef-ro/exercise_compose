@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetreader.Model.modelBook
 import com.example.jetreader.R
 
 
@@ -132,6 +135,9 @@ fun passwordInput(
 
 }
 
+/*
+Password Visibility
+ */
 
 @Composable
 fun PasswordVisibility(passwordVisibility: MutableState<Boolean>) {
@@ -151,9 +157,20 @@ fun PasswordVisibility(passwordVisibility: MutableState<Boolean>) {
 ItemCard
  */
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun ItemCard() {
+fun ItemCard(
+    book:modelBook= modelBook("1","Jungle","jack","lorem sfmslfmselfmselfm"),
+    onDetails:(String)->Unit={}) {
+
+    val context= LocalContext.current
+    val resource=context.resources
+
+    val displayMetrics=resource.displayMetrics
+
+    val screenWidth=displayMetrics.widthPixels / displayMetrics.density
+
+    val spacing=10.dp
 
     Surface(
         shadowElevation = 15.dp,
@@ -176,6 +193,7 @@ fun ItemCard() {
                 modifier = Modifier.size(80.dp),
                 shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
             ) {
+
                 Image(
                     modifier = Modifier.fillMaxSize(),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -186,6 +204,7 @@ fun ItemCard() {
 
             Column(
                 modifier = Modifier
+//                    .width(screenWidth.dp-(spacing*2))
                     .weight(0.3f)
                     .padding(start = 15.dp)
             ) {

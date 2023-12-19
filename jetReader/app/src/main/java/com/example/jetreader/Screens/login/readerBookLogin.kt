@@ -1,10 +1,7 @@
 package com.example.jetreader.Screens.login
 
-import android.net.Uri
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
@@ -29,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,11 +33,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -52,15 +47,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.jetreader.Components.InputField
 import com.example.jetreader.Components.passwordInput
 import com.example.jetreader.Components.readerLogo
 import com.example.jetreader.Navigation.readerScreens
 import com.example.jetreader.R
 import com.example.jetreader.Screens.login.viewModel.viewModelLogin
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 /*
@@ -69,12 +61,20 @@ Reader Login
 @Composable
 fun readerBookLogin(
     navController: NavController,
-    viewModel: viewModelLogin= hiltViewModel()
+    viewModel: viewModelLogin = hiltViewModel<viewModelLogin>()
 ) {
+
+    viewModel.checkConnection()
 
     val showLogin = rememberSaveable {
         mutableStateOf(true)
     }
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        Toast.makeText(context, "${viewModel.connected.value}", Toast.LENGTH_SHORT).show()
+    }
+
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -342,11 +342,10 @@ fun submitButton(textId: String, loading: Boolean, validInput: Boolean, onClick:
             modifier = Modifier
                 .padding(10.dp)
                 .size(25.dp)
-        ) else Text(text = textId, modifier = Modifier
-            .padding(2.dp)
-            .clickable {
-
-            })
+        ) else Text(
+            text = textId, modifier = Modifier
+                .padding(2.dp)
+        )
     }
 }
 

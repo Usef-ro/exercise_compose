@@ -1,6 +1,10 @@
 package com.example.jetreader.Di
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,11 +16,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object appModule {
 
+
+
     @Singleton
     @Provides
-    fun providerContext(@ApplicationContext context: Context):Context{
-        return context
+    fun providerFireBaseAuth():FirebaseAuth{
+        return  Firebase.auth
     }
 
+    @Singleton
+    @Provides
+    fun providersFireBaseInstance():FirebaseFirestore{
+        return FirebaseFirestore.getInstance()
+    }
 
 }
