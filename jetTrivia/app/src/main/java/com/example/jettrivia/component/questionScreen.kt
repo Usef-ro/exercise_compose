@@ -1,5 +1,6 @@
 package com.example.jettrivia.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,9 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
@@ -33,14 +37,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jettrivia.domain.modelQuestionItem
+import com.example.jettrivia.ui.theme.Purple80
 import com.example.jettrivia.viewModel.viewModelQuestion
 
 @Composable
@@ -76,7 +84,7 @@ fun questionScreen(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .fillMaxHeight(), color = MaterialTheme.colorScheme.primary
+            .fillMaxHeight(), color = Purple80
 //        MaterialTheme.colorScheme.primary
     ) {
 
@@ -198,21 +206,23 @@ fun questionScreen(
                 /*
                 Button Next
                  */
-                Button(
+                OutlinedButton(
                     onClick = {
                         onNextClicked(questionIndex.value)
                     },
                     modifier = Modifier
                         .padding(3.dp)
-                        .background(Color.White)
+//                        .background(Color.White)
                         .align(alignment = Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(34.dp),
-                    colors = ButtonDefaults.buttonColors()
+//                    border= BorderStroke(1.dp, color = Color.Black),
+//                    colors =
                 ) {
                     Text(
                         text = "Next", modifier = Modifier
                             .padding(4.dp)
-                            .background(Color.Black)
+                        ,style= TextStyle(color=Color.Black)
+//                            .background(Color.Black)
                     )
                 }
             }

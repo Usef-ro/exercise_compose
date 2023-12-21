@@ -3,6 +3,7 @@ package com.example.jettrivia.repository
 import android.util.Log
 import com.example.jettrivia.domain.modelQuestion
 import com.example.jettrivia.domain.modelQuestionItem
+import java.io.IOException
 import javax.inject.Inject
 
 class questionRepository @Inject constructor(
@@ -21,12 +22,11 @@ class questionRepository @Inject constructor(
             listOfQuestion.loading=true
 
             listOfQuestion.data=api.getAllQuestion()
-
             if(listOfQuestion.data.toString().isNotEmpty())
 
                 listOfQuestion.loading=false
 
-        }catch (exception:Exception){
+        }catch (exception:IOException){
 
             listOfQuestion.e=exception
 

@@ -7,8 +7,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -24,13 +26,24 @@ object appModule {
     )=questionRepository(api)
 
 
+    @Singleton
+    @Provides
+    fun providerOkHTTP():OkHttpClient{
+        return OkHttpClient
+            .Builder()
+
+            .connectTimeout(15,TimeUnit.SECONDS)
+            .readTimeout(15,TimeUnit.SECONDS)
+            .build()
+    }
 
     @Singleton
     @Provides
-    fun provideQuestionApi():questionApi{
+    fun provideQuestionApi(okHttpClient: OkHttpClient):questionApi{
         return Retrofit.Builder()
             .baseUrl(url_BASE)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
 
             .build()
             .create(questionApi::class.java)
