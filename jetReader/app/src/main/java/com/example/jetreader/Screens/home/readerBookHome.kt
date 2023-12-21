@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -48,22 +49,28 @@ import com.example.jetreader.Navigation.readerScreens
 import com.example.jetreader.R
 import com.google.firebase.auth.FirebaseAuth
 
+/*
+Home Screen
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
-fun readerBookHome(navController: NavController = rememberNavController()) {
+fun readerBookHome(navController: NavController ) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             readerAppBar(
-                title = "Titleo",
+                title = "JetReader",
 //                accountName = "Joy",
                 showProfile = true,
                 navController = navController
             )
         },
+
+        /*
+        Floating Button
+         */
         floatingActionButton = {
             FabContent() {
 
@@ -73,7 +80,7 @@ fun readerBookHome(navController: NavController = rememberNavController()) {
         /*
         Content
          */
-        Surface {
+        Surface(modifier = Modifier.padding(it)) {
             HomeContent(navController = navController)
         }
     }
@@ -116,7 +123,7 @@ fun readerAppBar(
                     }
             }) {
                 Icon(
-                    imageVector = Icons.Rounded.Add, contentDescription = "Logout",
+                    imageVector = Icons.Rounded.Logout, contentDescription = "Logout",
                     tint = Color.Green.copy(alpha = 0.4f)
                 )
             }
@@ -147,8 +154,9 @@ fun titleSection(
 }
 
 
+@Preview(showBackground = true)
 @Composable
-fun HomeContent(navController: NavController) {
+fun HomeContent(navController: NavController= rememberNavController()) {
 
     // me @gmail.com
     val currentUserNmae=if(!FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty())
@@ -165,8 +173,11 @@ fun HomeContent(navController: NavController) {
             modifier = Modifier.align(alignment = Alignment.Start)
         ) {
             titleSection(labelId = "Your Reading \n " + "activity right now ...")
+            Spacer(modifier = Modifier.fillMaxWidth(0.7f))
 
-            Column {
+            Column(
+
+            ) {
                 Icon(
                     modifier = Modifier
                         .clickable {
@@ -178,7 +189,6 @@ fun HomeContent(navController: NavController) {
                     tint = MaterialTheme.colorScheme.secondaryContainer
                 )
 
-                Spacer(modifier = Modifier.fillMaxWidth(0.7f))
 
                 Text(
                     text = currentUserNmae!!,
@@ -205,6 +215,10 @@ fun readingRightNowArea(
 
 }
 
+
+/*
+Floating Button
+ */
 @Composable
 fun FabContent(onTap: (String) -> Unit) {
     FloatingActionButton(

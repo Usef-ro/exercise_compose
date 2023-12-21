@@ -21,11 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.jetreader.Components.readerLogo
 import com.example.jetreader.Navigation.readerScreens
-import com.example.jetreader.Screens.login.viewModel.viewModelLogin
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
@@ -35,7 +33,8 @@ Splash screen
  */
 
 @Composable
-fun readerBookSplash(navController: NavController,
+fun readerBookSplash(
+    navController: NavController,
 ) {
 
 
@@ -44,33 +43,26 @@ fun readerBookSplash(navController: NavController,
     }
     LaunchedEffect(key1 = true) {
 
-        scale.animateTo(targetValue = 0.9f,
-            animationSpec = tween(
-                durationMillis = 800, easing =
-                {
-                    OvershootInterpolator(8f)
-                        .getInterpolation(it)
-                }
-            )
+        scale.animateTo(
+            targetValue = 0.9f, animationSpec = tween(durationMillis = 800, easing = {
+                OvershootInterpolator(8f).getInterpolation(it)
+            })
 
         )
         delay(2000L)
 
-        // check emial is exsit or not
-        if(FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()){
-
+        // check email is exist or not
+        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
             navController.navigate(readerScreens.loginScreen.name)
 
-        }else{
-
+        } else {
             navController.navigate(readerScreens.homeScreen.name)
 
         }
     }
 
     Surface(
-        modifier =
-        Modifier
+        modifier = Modifier
             .padding(15.dp)
             .size(330.dp)
             .scale(scale = scale.value),
@@ -80,7 +72,6 @@ fun readerBookSplash(navController: NavController,
             width = 2.dp, color = Color.LightGray
         )
     ) {
-
         Column(
             modifier = Modifier.padding(1.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -95,7 +86,7 @@ fun readerBookSplash(navController: NavController,
             Spacer(modifier = Modifier.height(15.dp))
 
             /*
-
+            Text
              */
             Text(
                 text = "\"Read. Change. Yourself \" ",

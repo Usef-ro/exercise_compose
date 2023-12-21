@@ -26,9 +26,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetReaderTheme {
-                // A surface container using the 'background' color from the theme
 
                 MainApp()
+
             }
         }
     }

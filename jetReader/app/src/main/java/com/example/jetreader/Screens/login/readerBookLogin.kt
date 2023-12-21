@@ -188,7 +188,7 @@ fun userForm(
     Column(
         modifier =
         Modifier
-            .height(250.dp)
+            .height(280.dp)
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,

@@ -20,29 +20,12 @@ class repository @Inject constructor(
 ) {
     var TAG = "repository"
 
+
     fun signInWithEandP(email: String, password: String, onResult: (String) -> Unit = {}) {
 
-        try {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    Log.e(
-                        "${TAG} => signInWithEmailAndPassword",
-                        "addOnSuccessListener: ${it.user}",
-                    )
-                }
-                .addOnFailureListener {
-                    Log.e(
-                        "${TAG} => signInWithEmailAndPassword",
-                        "addOnFailureListener: ${it.localizedMessage}",
-                    )
-                }
-                .addOnCanceledListener {
-                    Log.e(
-                        "${TAG} => signInWithEmailAndPassword",
-                        "addOnCanceledListener",
-                    )
-                }
+        try{
 
+            auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
 //                        home()
@@ -64,23 +47,14 @@ class repository @Inject constructor(
     fun signUpWithEmailAndPassword(email: String, password: String,onResult: (Boolean) -> Unit) {
         try {
             auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
+                .addOnCompleteListener {
 
                     // me  @gmail.com
-                    val displayName = it.user?.email?.split("@")?.get(0)
+                    val displayName = it.result.user?.email?.split("@")?.get(0)
                     addUserToDatabase(displayName!!)
                     onResult(false)
 //                    home()
 //                    _loading.value = false
-                }
-                .addOnFailureListener {
-                    Log.e(
-                        "${TAG} => createUserWithEmailAndPassword",
-                        "addOnFailureListener: ${it.localizedMessage}",
-                    )
-                    onResult(false)
-//                    _loading.value = false
-
                 }
         } catch (e: Exception) {
             Log.e(

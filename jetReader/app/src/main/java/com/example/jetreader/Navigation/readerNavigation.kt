@@ -17,6 +17,9 @@ import com.example.jetreader.Screens.splash.readerBookSplash
 import com.example.jetreader.Screens.stats.readerBookStats
 
 
+/*
+Navigation Setup
+ */
 @Composable
 fun readerNavigation(
 
@@ -25,7 +28,7 @@ fun readerNavigation(
 
     NavHost(
         navController = navConroller,
-        startDestination = readerScreens.splashScreen.name
+        startDestination = readerScreens.homeScreen.name
     ) {
 
         composable(readerScreens.splashScreen.name) {
